@@ -1,0 +1,10 @@
+http://users.telenet.be/d.rijmenants/en/enigmatech.htm
+http://people.physik.hu-berlin.de/~palloks/js/enigma/enigma-u_v26_en.html
+http://www.cs.cornell.edu/courses/cs3110/2019sp/a1/#step-6-rotors
+https://www.youtube.com/watch?v=kj_7Jc1mS9k
+https://www.youtube.com/watch?v=V4V2bpZlqx8&t=1s
+https://www.youtube.com/watch?v=d2NWPG2gB_A&t=153s
+https://docs.python.org/3/library/tkinter.html
+https://docs.python.org/3/library/tk.html
+https://realpython.com/python-gui-tkinter/
+https://www.pygame.org/

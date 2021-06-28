@@ -1,0 +1,7 @@
+Hi,
+
+Welcome to reviewing my Enigma solution. Hope you enjoy the show.
+The code starts in Enigma.py, and everything branches is off from there.
+You can run Enigma.py, and see a GUI, unfortunately it doesn't work yet, was a lot more work than first thought, but you can pretend.
+
+Thanks.
