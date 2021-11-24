@@ -16,8 +16,8 @@ def Code1():
     Starting positions: MJM
     Plugboard pairs: KI XN FL
     """
-    code = "DMEXBMKYCVPNQBEDHXVPZGKMTFFBJRPJTLHLCHOTKOYXGGHZ".lower()
-    crib = "SECRETS".lower()
+    code = "DMEXBMKYCVPNQBEDHXVPZGKMTFFBJRPJTLHLCHOTKOYXGGHZ"
+    crib = "SECRETS"
     print("======= Crack Code 1 =======")
     print("Rotors: Beta Gamma V")
     print("Reflector: Unknown")
@@ -25,13 +25,15 @@ def Code1():
     print("Starting positions: MJM")
     print("Plugboard pairs: KI XN FL")
     reflectors = ['A','B','C']
+    
     for reflector in reflectors:
         rotors = [("V",14,'M'),("Gamma",2,'J'),("Beta",4,'M'),(reflector,1,'A')]
         plugBoardInputs = ["KI", "XN" ,"FL"]
         machine = EnigmaMachine(rotors, plugBoardInputs)
         decrypted = [machine.encode(c) for c in code]
-        if crib in decrypted:
-            return decrypted
+        text = ''.join(decrypted)
+        if crib in text:
+            return f"found {text} with reflector {reflector}"
 
 def Code2():
     """
@@ -43,8 +45,8 @@ def Code2():
     Starting positions: Unknown
     Plugboard pairs: VH PT ZG BJ EY FS
     """
-    code = "CMFSUPKNCBMUYEQVVDYKLRQZTPUFHSWWAKTUGXMPAMYAFITXIJKMH".lower()
-    crib = "UNIVERSITY".lower()
+    code = "CMFSUPKNCBMUYEQVVDYKLRQZTPUFHSWWAKTUGXMPAMYAFITXIJKMH"
+    crib = "UNIVERSITY"
     print("======= Crack Code 2 =======")
     print("Rotors: Beta I III")
     print("Reflector: B")
@@ -58,9 +60,9 @@ def Code2():
     for combo in rotorCombinations:
         machine = EnigmaMachine(combo, plugBoardInputs)
         decrypted = [machine.encode(c) for c in code]
-        if crib in decrypted:
-            print(f"Found {decrypted} with rotors {combo}")        
-            return decrypted
+        text = ''.join(decrypted)
+        if crib in text:   
+            return f"Found {text} with rotors {combo}"
 
 def Code3():
     """
@@ -68,8 +70,8 @@ def Code3():
     They know it contains the word "THOUSANDS" and they are worried it might relate to how many students are arriving next semester. But the admissions team are a bit unusual: they love even numbers, and hate odd numbers.
     You happen to know they will never use an odd-numbered rotor, ruling out I, III, and V. They will also never use a ring setting that has even a single odd digit: 02 is allowed but 11 is certainly not, and even 12 is banned.
     """
-    code = "ABSKJAKKMRITTNYURBJFWQGRSGNNYJSDRYLAPQWIAGKJYEPCTAGDCTHLCDRZRFZHKNRSDLNPFPEBVESHPY".lower()
-    crib = "THOUSANDS".lower()
+    code = "ABSKJAKKMRITTNYURBJFWQGRSGNNYJSDRYLAPQWIAGKJYEPCTAGDCTHLCDRZRFZHKNRSDLNPFPEBVESHPY"
+    crib = "THOUSANDS"
     rotorOptions = "Beta,Gamma,II,IV"
     reflectors = "A,B,C"
     print("======= Crack Code 3 =======")
@@ -145,8 +147,8 @@ def Code4():
     They left behind a coded message, but some leads have been pulled out of the machine.
     It might contain a clue, but I'll have to find the missing lead positions (marked with question marks in the settings below).
     """
-    code = "SDNTVTPHRBNWTLMZTQKZGADDQYPFNHBPNHCQGBGMZPZLUAVGDQVYRBFYYEIXQWVTHXGNW".lower()
-    crib = "notutorswere".lower()
+    code = "SDNTVTPHRBNWTLMZTQKZGADDQYPFNHBPNHCQGBGMZPZLUAVGDQVYRBFYYEIXQWVTHXGNW"
+    crib = "notutorswere"
     rotorOptions = "V,III,IV,A"
     print("======= Crack Code 4 =======")
     print(f"Rotor options: {rotorOptions}")
@@ -180,8 +182,9 @@ def Code4():
             combinations += 1
             machine = EnigmaMachine(rotors, plugs)
             decrypt = [machine.encode(c) for c in code]
-            if crib in decrypt:
-                return decrypt
+            text = ''.join(decrypt)
+            if crib in text:
+                return text
 
 def Code5():
     """
@@ -193,7 +196,7 @@ def Code5():
     To be clear, a single wire connects two letters, e.g. mapping A to Y and Y to A. The sender has taken two wires (fours pairs of letters), e.g. A-Y and H-J, and swapped one of the ends, so one option would be H-Y and A-J.
     They did this twice, so they modified eight letters total (they did not swap the same wire more than once).
     """
-    code = "HWREISXLGTTBYVXRCWWJAKZDTVZWKBDJPVQYNEQIOTIFX".lower()
+    code = "HWREISXLGTTBYVXRCWWJAKZDTVZWKBDJPVQYNEQIOTIFX"
     crib = ['INSTAGRAM','FACEBOOK','TUMBLR','TWITTER','YOUTUBE','REDDIT','SNAPCHAT','LINKEDIN']
     rotorOptions = "V,II,IV"
     print("======= Crack Code 4 =======")
@@ -252,87 +255,104 @@ def Code5():
                 if pf in text:
                     return text
 
-def SwapWires1(machine, wires):
-    rb = machine.GetRotorBoard()
-    rotor = rb.rotorList[3]
-    print(wires)
-    mappings = rotor.mapping
-    w1 = mappings[0].index(wires[0])
-    w2 = mappings[0].index(wires[1])
-    temp = mappings[1][w2]
-    #print(f"{mappings[1][w1]} -> {mappings[1][w2]}")
-    mappings[1][w2] = mappings[1][w1]
-    mappings[1][w1] = temp
-
-    w1 = mappings[0].index(wires[2])
-    w2 = mappings[0].index(wires[3])
-    temp = mappings[1][w2]
-    #print(f"{mappings[1][w1]} -> {mappings[1][w2]}")
-    mappings[1][w2] = mappings[1][w1]
-    mappings[1][w1] = temp
-
 def SwapWires(machine, pairs):
     rb = machine.GetRotorBoard()
     rotor = rb.rotorList[3]
-    #print(pairs)
-    #print(f"swapping {pairs}")
     #a list compormising of two lists, one labels, one pins
     mappings = rotor.mapping
      #(a,e),(b,j),(c,m),(d,j)7
     i = 0
-    
     while i < 4:
-        #print(mappings[0])
-        #print(mappings[1])
         first = pairs[i]
         second = pairs[i+1]
-        #print(f"{first[0]}{first[1]} becomes {first[0]}{second[1]} and {first[1]}{first[0]} becomes{first[1]}{second[1]} and {second[0]}{second[1]} becomes {second[0]}{first[1]} and {second[1]}{second[0]} becomes {second[1]}{first[1]}")
         #take the index of the pin to find the position to swap for both
         sw1 = mappings[1].index(first[1])
         sw2 = mappings[1].index(second[1])
         #so now we swap the letters
         mappings[1][sw1] = second[1]
         mappings[1][sw2] = first[1]
-        #print(mappings[1][sw1],mappings[1][sw2])
-        #look for position first[0] in mappings[1]
-        #look for positio second[0] in mappings [1]
         sw1r = mappings[1].index(first[0])
         sw2r = mappings[1].index(second[0])
         temp = mappings[1][sw1r]
         mappings[1][sw1r] = mappings[1][sw2r]
         mappings[1][sw2r] = temp
         temp = ""
-        #mappings[1][posFirst[0]] = second[0] in mappings [1]
-        #sw1r = mappings[1].index(second[1])
-        #sw2r = mappings[1].index(first[1])
-        #mappings[0][sw1] = second[1]
-        #mappings[0][sw2] = first[1]
-        #Y -> A
-        #print(mappings[0])
-        #print(mappings[1])
         i += 2
+
+
+#code 6 is about breaking the enigma machine from just output analysis. You have an encrypted bit of text, and you understand that a letter cannot become itself. So you build the machine to check all outputs against this encrypted text.
+def ExtraCode6():
+
+    #first we chose a piece of text we want to encrypt
+    toEncrypt = "THEWEATHERTODAYISLOOKINGGREATFORANAIRRAIDLONGLIVETHEKING"
+    #chose some random settings
+    rotorOptions = "I,II,III,IV,Beta,Gamma"
+    print(f"Rotor options: {rotorOptions}")
+    print(f"Rotor to encrypt {rotorOptions[0]},{rotorOptions[3]},{rotorOptions[2]} reflector A")
+    print(f"Ring setting 05 20 32")
+    print("Plugboard pairs: AB CD EF NX WT")
+    plugBoardInputs = ["AB","CD","EF","NX","WT"]
+    print(f"All rotors at starting position A")
+    rotors = [(rotorOptions[0],7,'A'),(rotorOptions[3],18,'A'),(rotorOptions[2],6,'A'),('A',1,'A')]
+    machine = EnigmaMachine(rotors,plugBoardInputs)
+    decrypt = [machine.encode(c) for c in toEncrypt]
+    text = ''.join(decrypt)
+    print(f"out of encryption {text}")
+    machine = EnigmaMachine(rotors,plugBoardInputs)
+    decrypt = [machine.encode(c) for c in text]
+    output = ''.join(decrypt)
+    print(f"Check it runs back through -> {output}")
+
+    print("======= Cracking the code =======")
+    print(f"======= Intercepted {toEncrypt} =======")
+
+    print(f"Rotor options: {rotorOptions}")
+    print("Reflector: unknown")
+    print("Ring settings: unknown")
+    print("Starting positions: uknown")
+    print("Plugboard pairs: unknown")
+    
+    #rotor permuations with reflectors
+    #rotor permutaitons with ring settings
+    #rotor permutations with rings settings, and starting positions
+    #plugboard inputs
+    plugBoardCombinations = itertools.permutations(alphabet,2)
+    plugboardcombos = []
+    for perm in plugBoardCombinations:
+        if (perm[1],perm[0]) not in plugboardcombos:
+            plugboardcombos.append(perm)
+            print(perm)
+    #can have 10 inputs
+    #plugboardInputs = itertools.permutations(plugboardcombos,10)
+    for input in itertools.permutations(plugboardcombos,10):
+        print(input)
+    rotors = [('IV',7,'L'),('II',18,'J'),('V',6,'A'),('B',1,'A')]
+    machine = EnigmaMachine(rotors,[])
+    
 
 if __name__ == "__main__":
 
+    #ExtraCode6()
     start = time.time()
-    print(Code1())
+    #print(Code1())
 
     end = time.time()
     print(f" Processing took {end - start} seconds")
 
     start = time.time()
-    print(Code2())
+    #print(Code2())
     end = time.time()
     print(f" Processing took {end - start} seconds")
 
     start = time.time()
-    print(Code3())
+    #print(Code3())
     end = time.time()
     print(f" Processing took {end - start} seconds")
     
     
+
     start = time.time()
-    print(Code4())
+    #print(Code4())
     end = time.time()
     print(f" Processing took {end - start} seconds")
 
@@ -340,4 +360,5 @@ if __name__ == "__main__":
     print(Code5())
     end = time.time()
     print(f" Processing took {end - start} seconds")
+
     

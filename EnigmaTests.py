@@ -214,16 +214,16 @@ def test_EnigmaMachineDemonstration1():
     print("Set up your enigma machine with rotors I II III, reflector B, ring settings 01 01 01, and initial positions A A Z.")
     print("The plugboard should map the following pairs: HL MO AJ CX BZ SR NI YW DG PK.")
     text = "HELLOWORLD"
+    cipher = "RFKTMBXVVW"
     print(f"INPUT = {text}")
     rotors = [("III",1,'Z'),("II",1,'A'),("I",1,'A'),("B",1,'A')]
     plugBoardInputs = ["HL", "MO" ,"AJ" ,"CX" ,"BZ" ,"SR" ,"NI", "YW" ,"DG" ,"PK"]
     machine = EnigmaMachine(rotors, plugBoardInputs)
     output = ""
-    cipher = "RFKTMBXVVW"
-    for ch in cipher:
+    for ch in text:
         output += machine.encode(ch)
     print(f"OUTPUT = {output}")
-    assert(output == text)
+    assert(output == cipher)
 
 def test_EnigmaMachineDemonstration2():
     print("======= test_EnigmaMachineDemonstration2 =======")
@@ -294,5 +294,3 @@ def test_CThinPlusGammaRotor():
     machine = EnigmaMachine(rotors, plugBoardInputs)
     for i,e in enumerate(cipher):
         assert(machine.encode(e) == output[i])
-
-test_EnigmaMachineDemonstration2()

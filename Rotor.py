@@ -62,7 +62,7 @@ class Rotor():
     
     #Function is used to check the inputs passed in during construction and raising an exception if they fall out of acceptable ranges and inputs
     def __checkInputs(self, label, ringSetting, offset):
-        if label not in self.rotorTypeToLabel:
+        if label not in self.supportedRotors:
             raise ConfigurationException("Rotor Type Not Supported!",label)
         if label == "" or label not in self.supportedRotors:
             raise ConfigurationException("Rotor Not Supported!", label)
@@ -114,48 +114,48 @@ class Rotor():
     
     #purpose of this function is to encode the key value from the input, adjusting for rotor offsets
     def encodeRight(self,key):
-        print(f"key in {key} ",end="")
+        #print(f"key in {key} ",end="")
         #do key in to pin transform if the offset is > 0. Basically if the rotor has rotated then the input pins no longer match up with what is incoming. 
         if self.rotorOffset > 0:
             offset = self.rotorOffset
             modAdjusted = ((alphabet.index(key)) + offset) % self.options
             key = alphabet[modAdjusted]
-            print(f"adjusted by offset to {key} ",end="")
+            #print(f"adjusted by offset to {key} ",end="")
         
         #mapping is two lists [0] = Labels, [1] = pin to map to.
         #from the self.mapping[0] labels, search for the input key, use that index to retrieve the map in the corresponding list.
         outputKey = self.mapping[1][self.mapping[0].index(key)]
-        print(f"mapped to {outputKey} ",end="")
+        #print(f"mapped to {outputKey} ",end="")
         #print(f"in {key} to mapping {outputKey}")
         #like the input transformation, we must offset are output by the rotor offset
         if self.rotorOffset > 0:
             offset = self.rotorOffset
             modAdjusted = ((alphabet.index(outputKey)) - offset) % self.options
             outputKey = alphabet[modAdjusted]
-            print(f"adjusted by rotor offset to {outputKey} ",end="")
-        print(f" out {outputKey}")
+            #print(f"adjusted by rotor offset to {outputKey} ",end="")
+        #print(f" out {outputKey}")
         return outputKey
         
     #function like encode right, except we perform the mapping different
     def encodeLeft(self,key):
-        print(f"key in {key} ",end="")
+        #print(f"key in {key} ",end="")
         if self.rotorOffset > 0:
             offset = self.rotorOffset
             modAdjusted = ((alphabet.index(key)) + offset) % self.options
             key = alphabet[modAdjusted]
-            print(f"adjusted by offset to {key} ",end="")
+            #print(f"adjusted by offset to {key} ",end="")
             #print(f"rotor adjusted {key} ", end= "")
         
         #this works like the encode right version, except we search in the pins to find the label. 
         outputKey = self.mapping[0][self.mapping[1].index(key)]
-        print(f"mapped to {outputKey} ",end="")
+        #print(f"mapped to {outputKey} ",end="")
         #print(f"in {key} to mapping {outputKey}")
         if self.rotorOffset > 0:
             offset = self.rotorOffset
             modAdjusted = ((alphabet.index(outputKey)) - offset) % self.options
             outputKey = alphabet[modAdjusted]
-            print(f"adjusted by rotor offset to {outputKey} ",end="")
-        print(f" out {outputKey}")
+            #print(f"adjusted by rotor offset to {outputKey} ",end="")
+        #print(f" out {outputKey}")
         return outputKey
     
     #to satisfy the built in tests on the Jupyter sheet
@@ -229,7 +229,7 @@ class Rotorboard():
 
             #if we are on the notch point, and we are rotating ourselves, then we rotate the next rotor too.
             if currentKey == notchPoint:
-                #for this case the rotor to the right was on its notch point, and so are we, so we rotate and till next one to.
+                #for this case the rotor to the right was on its notch point, and so are we, so we rotate and tell next one too.
                 nextRingRotate = True
                 rotor.rotate()
             elif nextRingRotate:
@@ -254,9 +254,9 @@ class Rotorboard():
 
     def encode(self, keyIn):
         keyOut = keyIn
-        self.__printRotors()
+        #self.__printRotors()
         self.__rotateRings()
-        self.__printRotors()
+        #self.__printRotors()
         rotorNum = len(self.rotorList)
         
         #right to left
